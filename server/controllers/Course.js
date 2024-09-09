@@ -224,6 +224,7 @@ exports.getAllCourses=async(req,res)=>{
             studentsEnrolled:true,
         }).populate("instructor").exec();
 
+        console.log("All Cousress",allCourses);
         return res.status(200).json({
             success:true,
             message:"Data for all courses fetched successfully",

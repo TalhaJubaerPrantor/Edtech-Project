@@ -4,6 +4,7 @@ const Profile = require("../models/Profile");
 const otpGenerator=require("otp-generator");
 const bcrypt=require("bcrypt");
 const jwt=require("jsonwebtoken")
+const passwordUpdated=require('../mail/Template/passwordUpdateEmail')
 require("dotenv").config();
 const mailSender=require("../utils/mailSender")
 
@@ -44,7 +45,7 @@ const sendOTP=async (req,res)=>{
         console.log("OTP genarted",otp);
         
         //check unique otp or not
-        const result=await OTP.findOne({otp:otp});
+        let result=await OTP.findOne({otp:otp});
 
         while(result){
             otp=otpGenerator.generate(6,{
@@ -59,7 +60,7 @@ const sendOTP=async (req,res)=>{
 
         //create an entry for OTP
         const otpbody=await OTP.create(otpPayload);
-        console.log(otpbody);
+        console.log("More otp information",otpbody);
 
         //return successful response
         res.status(200).json({
@@ -131,7 +132,7 @@ const signup=async (req,res)=>{
         const recentOTP=await OTP.find({email}).sort({createdAt:-1}).limit(1);
         console.log(recentOTP);
 
-        if(recentOTP.length==0){
+        if(recentOTP.length===0){
             //OTP not found
             return res.status(400).json({
                 success:false,
@@ -165,7 +166,7 @@ const signup=async (req,res)=>{
             additionalDetails:profileDetails._id,
             image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
         })
-
+        console.log("New User Detail after Signup");
         console.log(newUser);
         //return res
         res.status(200).json({

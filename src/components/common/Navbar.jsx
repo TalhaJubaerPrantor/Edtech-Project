@@ -3,7 +3,6 @@ import { Link,useLocation,matchPath } from 'react-router-dom'
 import { BsChevronDown } from "react-icons/bs"
 import { useSelector } from "react-redux"
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai"
-import axios from "axios"
 
 import {apiConnector} from '../../services/apiConnector'
 import {categories } from '../../services/apis'
@@ -11,6 +10,7 @@ import logo from "../../assets/Logo/Logo-Full-Light.png"
 import { NavbarLinks } from "../../data/navbar-links"
 import {ACCOUNT_TYPE} from '../../utils/constants'
 
+import ProfileDropdown from "../core/Auth/ProfileDropdown"
 
 const Navbar = () => {
     const { token } = useSelector((state) => state.auth)
@@ -25,9 +25,10 @@ const Navbar = () => {
             (async()=>{
                 setLoading(true)
                 try {
-                    console.log(categories.CATEGORIES_API);
-                    const res = await axios.get(categories.CATEGORIES_API);
+                   // console.log(categories.CATEGORIES_API);
+                    const res = await apiConnector("GET",categories.CATEGORIES_API)
                     console.log("Printng sublinks data ",res);
+                    console.log(res.data.data);
                     setSubLinks(res.data.data)
                 } catch (error) {
                     console.log("Could not fetch Categories.", error)
@@ -137,7 +138,7 @@ const Navbar = () => {
                         </Link>
                     )}
 
-                    {/* {token !== null && <ProfileDropdown />} */}
+                    {token !== null && <ProfileDropdown />}
                     <button className="mr-4 md:hidden">
                         <AiOutlineMenu fontSize={24} fill="#AFB2BF" />
                     </button>
