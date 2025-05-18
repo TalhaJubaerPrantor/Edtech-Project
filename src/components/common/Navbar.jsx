@@ -49,7 +49,7 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <Link to="/">
-                   AlgoHub
+                   <h1 style={{color:"white"}}>AlgoHub</h1>
                 </Link>
 
                 {/* Navigation links */}
