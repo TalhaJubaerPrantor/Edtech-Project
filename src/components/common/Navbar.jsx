@@ -49,7 +49,7 @@ const Navbar = () => {
 
                 {/* Logo */}
                 <Link to="/">
-                    <img src={logo} alt="Logo" width={160} height={32} loading="lazy" />
+                   AlgoHub
                 </Link>
 
                 {/* Navigation links */}
