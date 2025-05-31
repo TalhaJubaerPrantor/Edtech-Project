@@ -91,11 +91,10 @@ const signup=async (req,res)=>{
             password,
             confirmPassword,
             accountType,
-            otp
         }=req.body
 
         //validation check
-        if(!firstName || !lastName || !email || !password || !confirmPassword || !otp){
+        if(!firstName || !lastName || !email || !password || !confirmPassword){
             return res.status(403).json({
                 success:false,
                 message:"All fields are required",
@@ -128,23 +127,6 @@ const signup=async (req,res)=>{
             })
         }
 
-        //find the most recent OTP Stored for the user
-        const recentOTP=await OTP.find({email}).sort({createdAt:-1}).limit(1);
-        console.log(recentOTP);
-
-        if(recentOTP.length===0){
-            //OTP not found
-            return res.status(400).json({
-                success:false,
-                message:"OTPP NOT FOund"
-            })
-        }//otp dont match
-        else if(otp!==recentOTP[0].otp){
-            return res.status(400).json({
-                success:false,
-                message:"OTPP do not match"
-            })
-        }
         
         //hash password
         const hashpassword=await bcrypt.hash(password,10);
